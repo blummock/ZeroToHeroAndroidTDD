@@ -23,12 +23,12 @@ class MainActivity : AppCompatActivity() {
         val textView = findViewById<TextView>(R.id.countTextView)
         incrementButton.setOnClickListener {
             state.update {
-                runCatching { count.increment(it.text) }.getOrDefault(UiState.Base("0"))
+                runCatching { count.increment(it.text) }.getOrDefault(it)
             }
         }
         lifecycleScope.launch(Dispatchers.Main.immediate) {
             state.collect {
-                it.map(textView, incrementButton)
+                it.setView(textView, incrementButton)
             }
         }
     }

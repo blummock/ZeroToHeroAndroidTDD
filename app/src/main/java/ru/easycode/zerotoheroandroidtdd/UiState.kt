@@ -8,17 +8,17 @@ sealed interface UiState : Serializable {
 
     val text: String
 
-    fun map(textView: TextView, button: Button)
+    fun setView(textView: TextView, button: Button)
 
     data class Base(override val text: String) : UiState {
-        override fun map(textView: TextView, button: Button) {
+        override fun setView(textView: TextView, button: Button) {
             textView.text = text
             button.isEnabled = true
         }
     }
 
     data class Max(override val text: String) : UiState {
-        override fun map(textView: TextView, button: Button) {
+        override fun setView(textView: TextView, button: Button) {
             textView.text = text
             button.isEnabled = false
         }
