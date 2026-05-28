@@ -1,6 +1,5 @@
 package ru.easycode.zerotoheroandroidtdd
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -18,13 +17,13 @@ interface RunAsync {
         onEach: (T) -> Unit
     )
 
-    class Base(private val dispatcher: CoroutineDispatcher) : RunAsync {
+    class Base : RunAsync {
         override fun <T : Any> runAsync(
             scope: CoroutineScope,
             background: suspend () -> T,
             ui: (T) -> Unit
         ) {
-            scope.launch(dispatcher) {
+            scope.launch {
                 val result = background.invoke()
                 ui.invoke(result)
             }
@@ -35,7 +34,7 @@ interface RunAsync {
             flow: Flow<T>,
             onEach: (T) -> Unit
         ) {
-            scope.launch(dispatcher) {
+            scope.launch {
                 flow.collect {
                     onEach.invoke(it)
                 }

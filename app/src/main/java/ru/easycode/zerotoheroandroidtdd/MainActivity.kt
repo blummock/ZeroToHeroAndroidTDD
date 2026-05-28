@@ -26,9 +26,12 @@ class MainActivity : ComponentActivity() {
             ): T {
                 return MainViewModel(
                     savedStateHandle = handle,
-                    runAsync = RunAsync.Base(Dispatchers.IO),
-                    repository = Repository.Base(),
-                    connection = MonitorConnection.Base(getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager)
+                    runAsync = RunAsync.Base(),
+                    repository = Repository.Base(Dispatchers.IO),
+                    connection = MonitorConnection.Base(
+                        dispatcher = Dispatchers.IO,
+                        cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+                    )
                 ) as T
             }
         })[MainViewModel::class.java]
