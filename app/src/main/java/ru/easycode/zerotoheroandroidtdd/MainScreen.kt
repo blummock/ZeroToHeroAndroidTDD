@@ -22,9 +22,11 @@ fun MainScreen(viewModel: MainViewModel) {
     ) {
         val uiState by viewModel.stateFlow.collectAsState()
         when (val state = uiState) {
-            is ProgressUi.Initial -> {
+            ProgressUi.Connected,
+            ProgressUi.Disconnected,
+            ProgressUi.Initial -> {
                 Column {
-                    if (!state.connected) {
+                    if (state is ProgressUi.Disconnected) {
                         Text(
                             text = "No internet connection",
                             modifier = Modifier.testTag("noInternetConnection")
@@ -34,7 +36,7 @@ fun MainScreen(viewModel: MainViewModel) {
                         modifier = Modifier
                             .testTag("loadButton")
                             .wrapContentSize(),
-                        enabled = state.connected,
+                        enabled = state is ProgressUi.Connected,
                         onClick = {
                             viewModel.load()
                             viewModel.loadInternal()
@@ -45,16 +47,16 @@ fun MainScreen(viewModel: MainViewModel) {
                 }
             }
 
-            ProgressUi.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.testTag("progress")
-                )
-            }
-
             is ProgressUi.Data -> {
                 Text(
                     modifier = Modifier.testTag("result"),
                     text = state.value
+                )
+            }
+
+            ProgressUi.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier.testTag("progress")
                 )
             }
         }
