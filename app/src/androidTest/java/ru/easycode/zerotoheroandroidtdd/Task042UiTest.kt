@@ -32,7 +32,7 @@ class Task042UiTest {
             textField.performTextReplacement("text number $index")
             addButton.performClick()
             textField.assertTextEquals("")
-            assertTextAtPosition(0, "text number $index")
+            assertTextAtPosition(index, "text number $index")
         }
 
         activityRule.scenario.recreate()
@@ -40,7 +40,7 @@ class Task042UiTest {
         Espresso.closeSoftKeyboard()
 
         repeat(times) { index ->
-            assertTextAtPosition(times - 1 - index, "text number $index")
+            assertTextAtPosition(times - 1 - index, "text number ${times - 1 - index}")
         }
     }
 
